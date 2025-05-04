@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Oyun Detayı</title>
+  <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+  <header>
+    <h1 id="gameTitle">Oyun Başlığı Yükleniyor...</h1>
+  </header>
+
+  <main>
+    <section id="game-info">
+      <img id="gameImage" src="https://via.placeholder.com/300x200?text=Loading..." alt="Oyun Görseli">
+      <p id="gameGenres">Tür: Yükleniyor...</p>
+      <p id="gameDescription">Açıklama: Yükleniyor...</p>
+      <p>Ortalama Puan: <span id="game-rating">-</span> / 5</p>
+    </section>
+
+    <section id="comments">
+      <h2>Yorumlar</h2>
+      <ul id="commentList">
+        <!-- Yorumlar burada listelenecek -->
+      </ul>
+    </section>
+
+    <section id="comment-section" style="display: none;">
+      <h3>Yorum Yap</h3>
+      <form id="comment-form">
+        <label for="rating">Puan (1-5):</label>
+        <input type="number" id="rating" name="rating" min="1" max="5" required>
+
+        <label for="comment">Yorum:</label>
+        <textarea id="comment" name="comment" rows="4" required></textarea>
+
+        <button type="submit">Gönder</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="gameDetails.js"></script>
+</body>
+</html>

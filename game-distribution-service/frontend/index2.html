@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cloud Game Portal</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #1e3c72, #2a5298);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 20px;
+    }
+
+    .btn {
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn-login {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .btn-login:hover {
+      background-color: #45a049;
+    }
+
+    .btn-register {
+      background-color: #2196F3;
+      color: white;
+    }
+
+    .btn-register:hover {
+      background-color: #1e88e5;
+    }
+
+    .btn-admin {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .btn-admin:hover {
+      background-color: #e53935;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎮 Cloud Game Portal</h1>
+  <p>Oyun dünyasına hoş geldin! Hemen giriş yap ya da kaydol.</p>
+
+  <div class="btn-group">
+    <button class="btn btn-login" onclick="window.location.href='login.html'">Giriş Yap</button>
+    <button class="btn btn-register" onclick="window.location.href='register.html'">Kayıt Ol</button>
+    <button class="btn btn-admin" onclick="window.location.href='admin.html'">🔑 Admin Giriş</button>
+  </div>
+  
+
+  <!-- Oyunlar Listesi -->
+  <div id="gameList" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 30px;"></div>
+
+  <form id="commentForm" style="display: none; margin-top: 20px;">
+    <textarea id="comment" placeholder="Yorumunuzu yazın..." rows="4" style="width: 100%; max-width: 500px; border-radius: 8px; padding: 10px;"></textarea><br>
+    <button type="submit" style="margin-top: 10px; padding: 10px 20px;">Yorum Yap</button>
+  </form>
+  <div id="commentStatus" style="margin-top: 10px;"></div>
+  
+
+  <script>
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    window.onload = function () {
+      fetchGames();
+      if (token && user) {
+        // Giriş yapılmışsa
+        const homeBtn = document.createElement("button");
+        homeBtn.innerText = "Ana Sayfaya Dön";
+        homeBtn.className = "btn btn-home";
+        homeBtn.onclick = () => window.location.href = "index2.html";
+
+        const logoutBtn = document.createElement("button");
+        logoutBtn.innerText = "Çıkış Yap";
+        logoutBtn.className = "btn btn-exit";
+        logoutBtn.onclick = () => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          alert("Çıkış yapıldı.");
+          window.location.href = "index2.html";
+        };
+      }
+    };
+
+    async function fetchGames() {
+      try {
+        const response = await fetch('http://localhost:5001/api/games');
+        const games = await response.json();
+        console.log("Gelen oyunlar:", games);
+  
+        const container = document.getElementById('gameList');
+        container.innerHTML = '';
+  
+        games.forEach(game => {
+          const gameCard = document.createElement('div');
+          gameCard.style.width = '200px';
+          gameCard.style.cursor = 'pointer';
+          gameCard.style.textAlign = 'center';
+  
+          gameCard.innerHTML = `
+            <img src="${game.gameImage}" alt="${game.gameTitle}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px;" />
+            <h3 style="margin: 10px 0;">${game.gameTitle}</h3>
+          `;
+  
+          gameCard.addEventListener('click', () => {
+            window.location.href = `game.html?id=${game._id}`;
+          });
+  
+          container.appendChild(gameCard);
+        });
+      } catch (err) {
+        console.error('Oyunlar yüklenirken hata oluştu:', err);
+      }
+    }
+
+    async function loginUser(email, password) {
+      try {
+        const response = await fetch('http://localhost:5001/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Kullanıcı bilgilerini ve token'ı sakla
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          alert('Giriş başarılı!');
+          window.location.href = 'profile.html'; // Profile sayfasına yönlendir
+        } else {
+          alert(data.message || 'Giriş başarısız!');
+        }
+      } catch (err) {
+        console.error('Giriş sırasında hata:', err);
+      }
+    }
+
+  </script>
+  
+
+</body>
+</html>

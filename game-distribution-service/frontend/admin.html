@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Giriş</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Oyun Ekle</h1>
+    <form id="addGameForm">
+      <input type="text" id="title" placeholder="Oyun Başlığı" required />
+      <input type="text" id="description" placeholder="Açıklama" />
+      <input type="text" id="genre" placeholder="Tür (ör. Aksiyon)" />
+      <input type="text" id="platform" placeholder="Platformlar (virgül ile)" />
+      <input type="url" id="imageUrl" placeholder="Kapak görseli (URL)" />
+      <input type="date" id="releaseDate" />
+      <button type="submit">Oyun Ekle</button>
+      <p id="statusMessage"></p>
+    </form>
+
+    <h2>Oyun Sil</h2>
+    <input type="text" id="deleteId" placeholder="Silinecek Oyun ID" />
+    <button onclick="deleteGame()">Sil</button>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

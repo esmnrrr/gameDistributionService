@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Oyun Detayı</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1 id="gameTitle">Oyun Başlığı</h1>
+    <img id="gameImage" src="" alt="Oyun Resmi" style="width: 300px; height: 200px; object-fit: cover;">
+    <p id="gameGenres">Tür: </p>
+    <p id="gameDescription">Açıklama yükleniyor...</p>
+    <p><strong>Puan Ortalaması:</strong> <span id="game-rating">-</span></p>
+
+    <hr>
+
+    <div id="comments-section">
+      <h2>Yorumlar</h2>
+      <ul id="commentList"></ul>
+    </div>
+
+    <hr>
+
+    <div id="comment-section" style="display: none;">
+      <h2>Yorum Ekle</h2>
+      <form id="comment-form">
+        <label for="rating">Puan (1-5):</label><br>
+        <input type="number" id="rating" name="rating" min="1" max="5" required><br><br>
+
+        <label for="playTime">Oynama Süresi (dakika):</label><br>
+        <input type="number" id="playTime" name="playTime" min="1" required><br><br>
+        
+        <label for="comment">Yorum:</label><br>
+        <textarea id="comment" name="comment" required></textarea><br><br>
+
+        <button type="submit" id="submitButton">Gönder</button>
+
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    async function loadComments(gameId) {
+      try {
+        const response = await fetch(`http://localhost:5001/api/games/${gameId}`);
+        const game = await response.json();
+        const commentList = document.getElementById('commentList');
+        commentList.innerHTML = '';
+  
+        game.comments.forEach(comment => {
+          const li = document.createElement('li');
+          const oynamaSuresi = (comment.play_time !== undefined && comment.play_time !== null) ? `${comment.play_time} dakika oynadı.` : "Oynama süresi belirtilmedi.";
+          li.textContent = `${comment.username}: ${comment.comment} (${comment.rating}/5) - ${oynamaSuresi}`;
+          commentList.appendChild(li);
+        });
+      } catch (err) {
+        console.error('Yorumlar yüklenirken hata oluştu:', err);
+      }
+    }
+
+    const token = localStorage.getItem('token');
+    if (token) {
+      document.getElementById('comment-section').style.display = 'block';
+    }
+  
+    async function postComment(gameId, comment, rating, play_time) {
+      if (!gameId) {
+        console.error("gameId eksik!");
+        return;
+      }
+
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Yorum yapabilmek için giriş yapmalısınız!');
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:5001/api/games/${gameId}/comment`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ comment, rating }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          alert('Yorum başarıyla eklendi!');
+          loadComments(gameId); // Yeni yorumu da yükle
+        } else {
+          alert(data.message || 'Yorum eklenemedi!');
+        }
+      } catch (err) {
+        console.error('Yorum ekleme sırasında hata:', err);
+      }
+    }
+  
+    // Sayfa yüklendiğinde yorumları yükle
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameId = urlParams.get('id');
+    if (gameId) {
+      loadComments(gameId);
+    }
+
+
+  </script>
+
+  <script src="gameDetails.js"></script>
+</body>
+</html>
