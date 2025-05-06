@@ -35,14 +35,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   document.getElementById("homeBtn").addEventListener("click", () => {
-    window.location.href = "index2.html";
+    window.location.href = "index.html";
   });
 
   document.getElementById("logoutBtn").addEventListener("click", () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     alert("Çıkış yapıldı!");
-    window.location.href = "index2.html";
+    window.location.href = "index.html";
   });
 
   document.getElementById("deleteBtn").addEventListener("click", () => {
