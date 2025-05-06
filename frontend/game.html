@@ -44,7 +44,7 @@
   <script>
     async function loadComments(gameId) {
       try {
-        const response = await fetch(`https://gamedistributionservice-frontend.onrender.com/api/games/${gameId}`);
+        const response = await fetch(`https://gamedistributionservice.onrender.com/api/games/${gameId}`);
         const game = await response.json();
         const commentList = document.getElementById('commentList');
         commentList.innerHTML = '';
@@ -78,7 +78,7 @@
       }
 
       try {
-        const response = await fetch(`https://gamedistributionservice-frontend.onrender.com/api/games/${gameId}/comment`, {
+        const response = await fetch(`https://gamedistributionservice.onrender.com/api/games/${gameId}/comment`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

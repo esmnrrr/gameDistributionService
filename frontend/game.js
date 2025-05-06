@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch(`https://gamedistributionservice-frontend.onrender.com/api/games/${gameId}/comment`, {
+      const response = await fetch(`https://gamedistributionservice.onrender.com/api/games/${gameId}/comment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
           commentForm.reset();
 
           const userId = JSON.parse(atob(token.split('.')[1])).id; // JWT içinden userId çekiyoruz
-          await fetch(`https://gamedistributionservice-frontend.onrender.com/users/updateStats/${userId}`, {
+          await fetch(`https://gamedistributionservice.onrender.com/users/updateStats/${userId}`, {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function updatePlaytime(userId, gameId, duration, token) {
     try {
-      const response = await fetch(`https://gamedistributionservice-frontend.onrender.com/api/users/updatePlaytime/${userId}`, {
+      const response = await fetch(`https://gamedistributionservice.onrender.com/api/users/updatePlaytime/${userId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

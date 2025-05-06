@@ -11,7 +11,7 @@ document.getElementById("addGameForm").addEventListener("submit", async (e) => {
     };
   
     try {
-      const res = await fetch("https://gamedistributionservice-frontend.onrender.com/api/games/add", {
+      const res = await fetch("https://gamedistributionservice.onrender.com/api/games/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(gameData)
@@ -28,7 +28,7 @@ document.getElementById("addGameForm").addEventListener("submit", async (e) => {
     const id = document.getElementById("deleteId").value;
   
     try {
-      const res = await fetch(`https://gamedistributionservice-frontend.onrender.com/games/delete/${id}`, {
+      const res = await fetch(`https://gamedistributionservice.onrender.com/games/delete/${id}`, {
         method: "DELETE"
       });
   
