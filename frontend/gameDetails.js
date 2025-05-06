@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   async function fetchGameDetails() {
     try {
-      const response = await fetch(`http://localhost:5001/api/games/${gameId}`);
+      const response = await fetch(`https://gamedistributionservice-frontend.onrender.com/api/games/${gameId}`);
       if (!response.ok) throw new Error("Oyun detayları yüklenemedi");
 
       const game = await response.json();
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadComments(gameId) {
   try {
-    const response = await fetch(`http://localhost:5001/api/games/${gameId}`);
+    const response = await fetch(`https://gamedistributionservice-frontend.onrender.com/api/games/${gameId}`);
     const game = await response.json();
     const commentList = document.getElementById('commentList');
     commentList.innerHTML = '';
@@ -67,7 +67,7 @@ async function loadComments(gameId) {
 
   async function postComment(comment, rating, play_time) {
     try {
-      const response = await fetch(`http://localhost:5001/api/games/${gameId}/comment`, {
+      const response = await fetch(`https://gamedistributionservice-frontend.onrender.com/api/games/${gameId}/comment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +99,7 @@ async function loadComments(gameId) {
 
   async function updateUserProfile(userId) {
     try {
-        const response = await fetch(`http://localhost:5001/users/profile/${userId}`, {
+        const response = await fetch(`https://gamedistributionservice-frontend.onrender.com/users/profile/${userId}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("token")}`

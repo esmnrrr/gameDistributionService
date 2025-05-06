@@ -6,7 +6,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
   const statusText = document.getElementById("loginStatus");
 
   try {
-    const response = await fetch("http://localhost:5001/users/login", {
+    const response = await fetch("https://gamedistributionservice-frontend.onrender.com/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

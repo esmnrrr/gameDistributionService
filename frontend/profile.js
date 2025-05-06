@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  fetch(`http://localhost:5001/users/profile/${userId}`, {
+  fetch(`https://gamedistributionservice-frontend.onrender.com/users/profile/${userId}`, {
     method: "GET",
     headers: {
       "Authorization": `Bearer ${localStorage.getItem("token")}`
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Kullanıcı silme işlemi
   async function deleteUser(userId) {
     try {
-      const res = await fetch(`http://localhost:5001/users/profile/${userId}`, {
+      const res = await fetch(`https://gamedistributionservice-frontend.onrender.com/users/profile/${userId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
